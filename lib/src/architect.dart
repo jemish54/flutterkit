@@ -1,59 +1,67 @@
 import 'dart:io';
 
+import 'package:flutterkit/src/generator.dart';
 import 'package:mason_logger/mason_logger.dart';
-import 'package:path/path.dart' as p;
+
+import 'cache.dart';
 
 class Architect {
+  String? title;
+  final String? org;
+  final String? url;
+
+  Architect({
+    this.title,
+    this.org,
+    this.url,
+  });
+
+  final cache = Cache();
   final logger = Logger();
 
-  Future<void> generateProject(String url) async {
-    final cache = await _getCacheDirectory();
+  Future<void> generateProject() async {
+    if (title == null) {
+      logger.err('No title provided for project creation');
+      return;
+    }
 
-    final label = url.split('/').last.split('.').first;
+    if (title != '.') {
+      await _createFlutterProject();
+    }
 
-    final cloneProgress = logger.progress('Cloning git repository');
-    await Process.run(
-      'git',
-      ['clone', '--depth', '1', url, label],
-      workingDirectory: cache,
+    if (url == null) {
+      return;
+    }
+
+    await cache.init();
+    cache.setUrl(url!);
+    await cache.ensureCached();
+
+    var vars = await cache.parseVariables(title!);
+
+    final generator = Generator(
+      title: title!,
+      variables: vars,
     );
-    cloneProgress.complete('Cloned the repository');
 
-    final copyProgress = logger.progress('Generating project from templete');
-    await _copyPath('$cache/$label', '${Directory.current.path}/$label');
-    copyProgress.complete('Project Generated');
+    if (!await generator.isValidFlutterProject) {
+      logger.err('Please run command in a valid flutter project');
+      return;
+    }
+
+    await generator.generate(cache);
   }
 
-  Future<String> _getCacheDirectory() async {
-    String home;
-
-    if (Platform.isLinux || Platform.isMacOS) {
-      home = Platform.environment['HOME']!;
-    } else if (Platform.isWindows) {
-      home = Platform.environment['USERPROFILE']!;
-    } else {
-      throw Exception('Platform not supported');
-    }
-
-    final dir = Directory(p.join(home, '.flutterkit'));
-    if (!await dir.exists()) {
-      await dir.create();
-    }
-
-    return dir.path;
-  }
-
-  Future<void> _copyPath(String from, String to) async {
-    await Directory(to).create(recursive: true);
-    await for (final file in Directory(from).list(recursive: true)) {
-      final copyTo = p.join(to, p.relative(file.path, from: from));
-      if (file is Directory) {
-        await Directory(copyTo).create(recursive: true);
-      } else if (file is File) {
-        await File(file.path).copy(copyTo);
-      } else if (file is Link) {
-        await Link(copyTo).create(await file.target(), recursive: true);
-      }
-    }
+  Future<void> _createFlutterProject() async {
+    final progress = logger.progress('Creating Base Flutter Project');
+    await Process.run(
+      'flutter',
+      [
+        'create',
+        title!,
+        if (org != null) ...['--org', org!],
+      ],
+    );
+    progress.complete('Flutter Project Created');
   }
 }

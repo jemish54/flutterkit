@@ -3,18 +3,12 @@ import 'dart:async';
 import 'package:args/command_runner.dart';
 import 'package:flutterkit/src/architect.dart';
 
-class CreateCommand extends Command {
+class CleanCommand extends Command {
   @override
-  String get description => 'Create project from git templete';
+  String get description => 'Clean the cached templates';
 
   @override
-  String get name => 'create';
-
-  CreateCommand() {
-    argParser
-      ..addOption('org', help: 'Organization name (reversed domain)')
-      ..addOption('url', help: 'Git Repository Url for Template');
-  }
+  String get name => 'clean';
 
   @override
   Future<void> run() async {
