@@ -1,7 +1,7 @@
 # Flutterkit
 
 [![Pub Version](https://img.shields.io/pub/v/flutterkit)](https://pub.dev/packages/flutterkit)
-[![GitHub License](https://img.shields.io/github/license/jemish54/flutterkit)](https://github.com/jemish54/flutterkit/blob/main/LICENSE)
+[![GitHub License](https://img.shields.io/github/license/jemish54/flutterkit)](https://github.com/jemish54/flutterkit/blob/master/LICENSE)
 
 ## Overview
 
@@ -71,7 +71,7 @@ Contributions are welcome! If you would like to contribute to this project, feel
 
 ## License
 
-This project is licensed under the MIT License. See the [LICENSE](https://github.com/jemish54/flutterkit/blob/main/LICENSE) file for details.
+This project is licensed under the MIT License. See the [LICENSE](https://github.com/jemish54/flutterkit/blob/master/LICENSE) file for details.
 
 ---
 
