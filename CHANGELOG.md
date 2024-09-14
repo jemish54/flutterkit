@@ -1,3 +1,3 @@
 ## 1.0.0
 
-- Initial version.
+- Initial release with boilerplate generation from GitHub templates.
