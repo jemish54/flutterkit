@@ -3,6 +3,6 @@
 /// More dartdocs go here.
 library;
 
-export 'src/architect.dart';
+export 'src/project_architect.dart';
 
 // TODO: Export any libraries intended for clients of this package.

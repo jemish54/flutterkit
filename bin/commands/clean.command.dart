@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:args/command_runner.dart';
-import 'package:flutterkit/src/architect.dart';
+import 'package:flutterkit/src/cache.dart';
 
 class CleanCommand extends Command {
   @override
@@ -12,11 +12,10 @@ class CleanCommand extends Command {
 
   @override
   Future<void> run() async {
-    final title = argResults?.arguments.first;
-    final org = argResults?['org'];
-    final url = argResults?['url'];
+    final template = argResults?.arguments.firstOrNull;
 
-    final architect = Architect(title: title, org: org, url: url);
-    await architect.generateProject();
+    final cache = Cache();
+    await cache.init();
+    await cache.clear(template);
   }
 }

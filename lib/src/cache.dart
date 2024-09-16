@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:flutterkit/src/yaml_writer.dart';
 import 'package:mason_logger/mason_logger.dart';
 import 'package:path/path.dart' as p;
 import 'package:yaml/yaml.dart';
@@ -57,10 +58,36 @@ class Cache {
     logger.success(const JsonEncoder.withIndent('    ')
         .convert(Map.from(vars)..remove('dependencies')));
 
-    return Map.from(vars)
+    final writer = YamlWriter();
+    final updatedVars = Map.from(vars)
       ..update(
         'title',
         (value) => title,
+        ifAbsent: () => title,
+      )
+      ..update(
+        'url',
+        (value) => _url,
+        ifAbsent: () => _url,
       );
+    final updatedYaml = writer.write(
+      updatedVars,
+    );
+
+    await File(p.join(path, label, 'flutterkit.yml'))
+        .writeAsString(updatedYaml);
+
+    return updatedVars;
+  }
+
+  Future<void> clear(String? template) async {
+    try {
+      if (template == null) {
+        await Directory(path).delete(recursive: true);
+        return;
+      }
+      await Directory(p.join(path, template)).delete(recursive: true);
+      // ignore: empty_catches
+    } catch (e) {}
   }
 }

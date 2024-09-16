@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:args/command_runner.dart';
-import 'package:flutterkit/src/architect.dart';
+import 'package:flutterkit/src/project_architect.dart';
 
 class CreateCommand extends Command {
   @override
@@ -22,7 +22,7 @@ class CreateCommand extends Command {
     final org = argResults?['org'];
     final url = argResults?['url'];
 
-    final architect = Architect(title: title, org: org, url: url);
+    final architect = ProjectArchitect(title: title, org: org, url: url);
     await architect.generateProject();
   }
 }

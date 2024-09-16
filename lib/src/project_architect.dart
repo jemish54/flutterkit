@@ -5,12 +5,12 @@ import 'package:mason_logger/mason_logger.dart';
 
 import 'cache.dart';
 
-class Architect {
+class ProjectArchitect {
   String? title;
   final String? org;
   final String? url;
 
-  Architect({
+  ProjectArchitect({
     this.title,
     this.org,
     this.url,
