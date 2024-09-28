@@ -51,6 +51,12 @@ class Cache {
   }
 
   Future<Map> parseVariables(String title) async {
+    String projectTitle = title;
+
+    if (title == '.') {
+      projectTitle = Directory.current.path.split('/').last;
+    }
+
     final yaml =
         await File(p.join(path, label, 'flutterkit.yml')).readAsString();
     final vars = loadYaml(yaml);
@@ -62,8 +68,8 @@ class Cache {
     final updatedVars = Map.from(vars)
       ..update(
         'title',
-        (value) => title,
-        ifAbsent: () => title,
+        (value) => projectTitle,
+        ifAbsent: () => projectTitle,
       )
       ..update(
         'url',

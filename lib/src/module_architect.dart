@@ -1,10 +1,10 @@
-import 'dart:convert';
 import 'dart:io';
 
-import 'package:flutterkit/src/generator.dart';
 import 'package:mason_logger/mason_logger.dart';
 import 'package:path/path.dart' as p;
 import 'package:yaml/yaml.dart';
+
+import 'package:flutterkit/src/generator.dart';
 
 import 'cache.dart';
 
