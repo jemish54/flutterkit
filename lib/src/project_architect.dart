@@ -9,11 +9,13 @@ class ProjectArchitect {
   String? title;
   final String? org;
   final String? url;
+  final String? branch;
 
   ProjectArchitect({
     this.title,
     this.org,
     this.url,
+    this.branch,
   });
 
   final cache = Cache();
@@ -34,7 +36,7 @@ class ProjectArchitect {
     }
 
     await cache.init();
-    cache.setUrl(url!);
+    cache.setUrl(url!, branch);
     await cache.ensureCached();
 
     var vars = await cache.parseVariables(title!);

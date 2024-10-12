@@ -13,7 +13,8 @@ class CreateCommand extends Command {
   CreateCommand() {
     argParser
       ..addOption('org', help: 'Organization name (reversed domain)')
-      ..addOption('url', help: 'Git Repository Url for Template');
+      ..addOption('url', help: 'Git Repository Url for Template')
+      ..addOption('branch', help: 'Git branch to use for template');
   }
 
   @override
@@ -21,8 +22,14 @@ class CreateCommand extends Command {
     final title = argResults?.arguments.first;
     final org = argResults?['org'];
     final url = argResults?['url'];
+    final branch = argResults?['branch'];
 
-    final architect = ProjectArchitect(title: title, org: org, url: url);
+    final architect = ProjectArchitect(
+      title: title,
+      org: org,
+      url: url,
+      branch: branch,
+    );
     await architect.generateProject();
   }
 }

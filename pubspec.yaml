@@ -1,5 +1,5 @@
 name: flutterkit
-version: 1.0.0
+version: 1.1.0
 description: A CLI to generate boilerplate Flutter projects from a GitHub template.
 repository: https://github.com/jemish54/flutterkit
 homepage: https://github.com/jemish54/flutterkit

@@ -9,6 +9,7 @@ class Cache {
   final logger = Logger();
   late final String _path;
   late final String _url;
+  String? _branch;
 
   Future<void> init() async {
     String home;
@@ -29,7 +30,11 @@ class Cache {
     _path = dir.path;
   }
 
-  void setUrl(String url) => _url = url;
+  void setUrl(String url, [String? branch]) {
+    _url = url;
+    _branch = branch;
+  }
+
   String get label => _url.split('/').last.split('.').first;
 
   String get path => _path;
@@ -44,7 +49,14 @@ class Cache {
     final cloneProgress = logger.progress('Cloning git repository');
     await Process.run(
       'git',
-      ['clone', '--depth', '1', _url, label],
+      [
+        'clone',
+        if (_branch != null) ...['-b', _branch!],
+        '--depth',
+        '1',
+        _url,
+        label
+      ],
       workingDirectory: path,
     );
     cloneProgress.complete('Cloned the repository');
