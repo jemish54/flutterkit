@@ -82,9 +82,13 @@ class Generator {
       if (entity is Directory) {
         await Directory(targetPath).create(recursive: true);
       } else if (entity is File) {
-        final fileContent = await entity.readAsString();
-        final renderedContent = _renderString(fileContent, updatedVariables);
-        await File(targetPath).writeAsString(renderedContent);
+        try {
+          final fileContent = await entity.readAsString();
+          final renderedContent = _renderString(fileContent, updatedVariables);
+          await File(targetPath).writeAsString(renderedContent);
+        } catch (e) {
+          logger.err('Unable to render file ${entity.path}');
+        }
       }
     }
   }
